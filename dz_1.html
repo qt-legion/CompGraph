@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<HTML>
+    <BODY>
+        <canvas id='dz' width='500' height='500'/>
+        <script>
+            let canvas = document.getElementById("dz");
+            let context = canvas.getContext("2d");
+            context.canvas.width = window.innerWidth-10;
+            context.canvas.height = window.innerHeight-20;
+            const windowInnerW = window.innerWidth;
+            const windowInnerH = window.innerHeight
+            var radius = windowInnerH;
+            const centerx = windowInnerW/2;
+            const centery = windowInnerH/2;
+            context.fillStyle = "#000000";
+            context.fillRect(0,0,windowInnerW,windowInnerH)
+            var re = 0;
+            var gr = 0;
+            var bl = 0;
+            color = 'rgb(' + re + ',' + gr + ',' + bl + ')'
+            context.fillStyle = color;
+            context.fillRect(0,0,windowInnerW, windowInnerH)
+            
+            function rect(){
+                context.fillRect(centerx-radius/2, centery-radius/2, radius, radius);
+            }
+
+            function sw_color(){
+                if ((window.re <= 250) && (window.gr <= 250) && (window.bl == 0)){
+                    window.re += 5;
+                }
+                else {
+                    if ((window.re == 255) && (window.gr <= 250) && (window.bl <= 250)){
+                        window.gr += 5;
+                    }
+                    else {
+                        if ((window.re >= 5) && (window.gr == 255) && window.bl <= 250){
+                            window.re -= 5;
+                        }
+                        else {
+                            if ((window.re == 0) && (window.gr == 255) && (window.bl <= 250)){
+                                window.bl += 5;
+                            }
+                            else {
+                                if ((window.re == 0) && (window.gr >= 5) && (window.bl == 255)){
+                                    window.gr -= 5;
+                                }
+                                else {
+                                    if ((window.re == 0) && (window.gr == 0) && (window.bl >= 5)){
+                                        window.bl -= 5;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            setInterval(function() {
+                rect();
+                radius -= 3 ;
+                if (radius < 1){
+                    radius = windowInnerH;
+                }
+                sw_color();
+                color = 'rgb(' + re + ',' + gr + ',' + bl + ')'
+                context.fillStyle = color;
+            }, 10);
+        </script>
+    </BODY>
+</HTML>
