@@ -58,13 +58,14 @@
 
             setInterval(function() {
                 rect();
-                radius -= 3 ;
-                if (radius < 1){
-                    radius = windowInnerH;
-                }
                 sw_color();
                 color = 'rgb(' + re + ',' + gr + ',' + bl + ')'
                 context.fillStyle = color;
+                radius -= 3;
+                if (radius < 1){
+                    context.fillRect(0,0,windowInnerW, windowInnerH)
+                    radius = windowInnerH;
+                }
             }, 10);
         </script>
     </BODY>
