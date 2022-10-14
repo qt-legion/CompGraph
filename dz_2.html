@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<HTML>
+<head>
+    <style>
+        #homework2 {
+            position: relative;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<BODY>
+<p id='demo'></p>
+<canvas id='homework2' width='100' height='100'/>
+
+<script>
+    let canvas = document.getElementById('homework2');
+    let ctx = canvas.getContext('2d');
+    let ctx2 = canvas.getContext('2d');
+
+    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    for (var j = 0; j < 100; j++) {
+        for (var i = 0; i < j; i++) {
+            data.data[100 * 4 * j + i * 4 + 2] = 255;
+            data.data[100 * 4 * j + i * 4 + 3] = 255;
+        }
+    }
+    for (var j = 0; j < 50; j++) {
+        for (var i = 0; i < j; i++) {
+            data.data[100 * 4 * (35+j) + (10+i) * 4] = 150;
+            data.data[100 * 4 * (35+j) + (10+i) * 4 + 3] = 255;
+        }
+    }
+    ctx.putImageData(data, 0, 0);
+    console.log(data);
+
+    toRight = true;
+    to = 10;
+    let start = Date.now();
+
+    let timer = setInterval(function () {
+        var time = new Date();
+        if (toRight) {
+            timePassed = Date.now() - start;
+            homework2.style.left = to + 'px';
+            to += 5;
+            if (timePassed > 3000) { 
+                toRight = false;
+                start = Date.now();
+                back = to; 
+            }
+        } else {
+            newtimePassed = Date.now() - start;
+
+            homework2.style.left = back + 'px';
+            back -= 5;
+
+            if (newtimePassed > 3000) { 
+                toRight = true;
+                start = Date.now();
+                to = 10;
+            }
+        }
+    }, 25);
+</script>
+</BODY>
+</HTML>

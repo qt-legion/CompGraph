@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<HTML>
+<head>
+</head>
+<BODY>
+<canvas id='homework3' width="600px" height="600px"></canvas>
+<p id='demo'></p>
+<script>
+    let canvas = document.getElementById('homework3');
+    let ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = "#000000";
+    ctx.font = 'bold 30px sans-serif';
+
+    function put_numbers(x0, y0) {
+        var x = x0 - 300
+        var y = y0 - 300
+
+        ctx.fillText("0", 280 + x, 90 + y);
+        ctx.strokeText("55", 160 + x, 120 + y);
+        ctx.strokeText("50", 90 + x, 200 + y);
+        ctx.fillText("45", 60 + x, 310 + y);
+        ctx.strokeText("40", 90 + x, 420 + y);
+        ctx.strokeText("35", 170 + x, 495 + y);
+
+        ctx.fillText("30", 280 + x, 530 + y);
+
+        ctx.strokeText("25", 410 + x, 495 + y);
+        ctx.strokeText("20", 480 + x, 420 + y);
+        ctx.fillText("15", 510 + x, 310 + y);
+        ctx.strokeText("10", 480 + x, 200 + y);
+        ctx.strokeText("5", 415 + x, 125 + y);
+    }
+
+
+    function dFs(x, y) {
+        return 4 * y + 6;
+    }
+
+    function dFd(x, y) {
+        return 4 * y + 4 * x + 10;
+    }
+
+    function draw_Rainbow_circle_From_Sem_4(R) {
+        let x = -R;
+        let y = 0;
+        let F = 1 - 2 * R;
+        while (y <= Math.abs(x)) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(x + 300, y + 300, 2, 2);
+            ctx.fillRect(-y + 300, -x + 300, 2, 2);
+
+            ctx.fillStyle = "#9a079a";
+            ctx.fillRect(-x + 300, y + 300, 2, 2);
+            ctx.fillStyle = "#ff00ff";
+            ctx.fillRect(y + 300, -x + 300, 2, 2);
+
+            ctx.fillStyle = "#940404";
+            ctx.fillRect(-x + 300, -y + 300, 2, 2);
+            ctx.fillStyle = "#ff0000";
+            ctx.fillRect(y + 300, x + 300, 2, 2);
+            ctx.fillStyle = "#07a607";
+            ctx.fillRect(x + 300, -y + 300, 2, 2);
+            ctx.fillStyle = "#00ff00";
+            ctx.fillRect(-y + 300, x + 300, 2, 2);
+
+            if (F < 0) {
+                F += dFs(x, y)
+                y++;
+            } else {
+                F += dFd(x, y);
+                x++;
+                y++;
+            }
+        }
+    }
+
+
+    function plot(x, y) {
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(x, y, 2, 2);
+    }
+
+    function draw_circle_By_Brezenhem_from_Wiki(x, y, R) {
+        var x0 = 0
+        var y0 = R
+        var delta = (2 - 2 * R)
+        while (y0 >= 0) {
+            plot(x + x0, y - y0);
+            plot(x - x0, y - y0);
+            plot(x - x0, y + y0);
+            plot(x + x0, y + y0);
+
+            if (delta < 0) {
+                x0++;
+                delta += 2 * x0 + 1;
+            }
+            if (delta > 0) {
+                y0--;
+                delta -= 2 * y0 + 1;
+            }
+        }
+    }
+
+    function draw_line(x0, y0, x_end, y_end, color) {
+        ctx.fillStyle = color;
+        var dx = x_end - x0;
+        var dy = y_end - y0;
+
+        var sign_x = Math.sign(dx);
+        var sign_y = Math.sign(dy);
+
+        var x = x0;
+        var y = y0;
+        var e = 0;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            while (x !== x_end) {
+                e += 2 * dy;
+                if (Math.abs(e) >= Math.abs(dx)) {
+                    y += sign_y;
+                    e -= 2 * sign_x * sign_y * dx;
+                }
+                ctx.fillRect(x, y, 1, 1);
+                x += sign_x;
+            }
+        } else {
+            while (y !== y_end) {
+                e += 2 * dx;
+                if (Math.abs(e) >= Math.abs(dy)) {
+                    x += sign_x;
+                    e -= 2 * sign_x * sign_y * dy;
+                }
+                ctx.fillRect(x, y, 1, 1);
+                y += sign_y;
+            }
+        }
+    }
+
+    var x0 = 300, y0 = 300;
+    var R = 200;
+
+    put_numbers(x0, y0)
+   
+    draw_Rainbow_circle_From_Sem_4(R+50)
+
+    setInterval(function () {
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        document.getElementById("demo").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+        var alpha = (seconds * 6 - 90) % 360;
+
+        var x_end = Math.abs(Math.trunc(x0 + R * Math.cos(alpha * Math.PI / 180)));
+        var y_end = Math.abs(Math.trunc(y0 + R * Math.sin(alpha * Math.PI / 180)));
+        draw_line(x0, y0, x_end, y_end, '#000000');
+
+        setInterval(function () {
+            draw_line(x0, y0, x_end, y_end, '#FFFFFF');
+        }, 1000);
+
+
+    }, 1000);
+</script>
+</BODY>
+</HTML>
